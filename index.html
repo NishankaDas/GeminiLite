@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gemini AI Chatbot</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            text-align: center; 
+            background-color: #f4f4f4;
+        }
+        #chatbox { 
+            width: 400px; 
+            height: 500px; 
+            overflow-y: auto; 
+            border: 2px solid #333; 
+            border-radius: 10px;
+            padding: 10px; 
+            margin: auto; 
+            background-color: white;
+            display: flex;
+            flex-direction: column;
+        }
+        .message { 
+            padding: 10px; 
+            border-radius: 10px; 
+            margin: 5px; 
+            max-width: 80%;
+            word-wrap: break-word;
+            font-size: 14px;
+        }
+        .user { 
+            background: #007bff; 
+            color: white; 
+            text-align: right; 
+            align-self: flex-end; 
+        }
+        .bot { 
+            background: #e0e0e0; 
+            color: black; 
+            text-align: left; 
+            align-self: flex-start; 
+        }
+        input, button { 
+            margin-top: 10px;
+            padding: 10px;
+            font-size: 16px;
+        }
+    </style>
+    
+</head>
+<body>
+    <h2>Nishanka AI Chatbot</h2>
+    <h6>powerd by Gemini</h6>
+    <div id="chatbox"></div>
+    <input type="text" id="userInput" placeholder="Type a message...">
+    <button onclick="sendMessage()">Send</button>
+
+    <script>
+        async function sendMessage() {
+            let userText = document.getElementById("userInput").value.trim();
+            if (!userText) return;
+
+            let chatbox = document.getElementById("chatbox");
+            
+            // Add user message
+            let userMessage = document.createElement("div");
+            userMessage.className = "message user";
+            userMessage.innerText = userText;
+            chatbox.appendChild(userMessage);
+
+            // Send request to backend
+            let response = await fetch("http://127.0.0.1:5000/chat", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message: userText })
+            });
+
+            let data = await response.json();
+
+            // Ensure the response is properly formatted
+            let botResponse = document.createElement("div");
+            botResponse.className = "message bot";
+            botResponse.innerHTML = data.response.replace(/\n/g, "<br>"); // Ensures line breaks
+            chatbox.appendChild(botResponse);
+
+            document.getElementById("userInput").value = "";
+            chatbox.scrollTop = chatbox.scrollHeight; // Auto-scroll to the latest message
+        }
+
+    </script>
+</body>
+</html>
