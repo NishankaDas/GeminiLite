@@ -6,7 +6,7 @@ app = Flask(__name__)
 CORS(app)  # Enable CORS for frontend
 
 # Configure your Gemini API Key
-genai.configure(api_key="AIzaSyCMekqEIs-lmHevESdWrV3ghm56D2_kltY")
+genai.configure(api_key="AIzaSyCMekqEIs-lmHevESdWrV3ghm56D2_kltX")
 
 # Function to get response from Gemini
 def get_gemini_response(user_input):
